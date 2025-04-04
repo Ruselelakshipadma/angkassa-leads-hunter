@@ -9,3 +9,6 @@ venv/
 
 # Mengabaikan file sistem operasi (misalnya file .DS_Store di macOS)
 .DS_Store
+
+# Mengabaikan file session Instagram
+session-gadingserpongproperty2023
