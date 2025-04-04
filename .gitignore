@@ -1,0 +1,11 @@
+# Mengabaikan file kredensial JSON
+your_credentials.json
+
+# Mengabaikan folder venv (virtual environment)
+venv/
+
+# Mengabaikan file log
+*.log
+
+# Mengabaikan file sistem operasi (misalnya file .DS_Store di macOS)
+.DS_Store
