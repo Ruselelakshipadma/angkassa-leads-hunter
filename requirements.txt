@@ -4,3 +4,4 @@ langdetect
 gspread
 oauth2client
 pytz
+Flask==2.2.3  # Menambahkan Flask versi 2.2.3
