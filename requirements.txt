@@ -1,7 +1,9 @@
+Flask==2.2.3
+Werkzeug==2.2.3
+instaloader==4.9
 requests
 beautifulsoup4
 langdetect
 gspread
 oauth2client
 pytz
-Flask==2.2.3  # Menambahkan Flask versi 2.2.3
