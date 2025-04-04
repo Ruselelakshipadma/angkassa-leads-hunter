@@ -37,7 +37,7 @@ existing_emails = set(master_sheet.col_values(4))
 
 # === STEP 2: IG SESSION ===
 L = instaloader.Instaloader()
-L.load_session_from_file("gadingserpongproperty2023", filename="gadingserpongproperty2023.session")
+L.load_session_from_file("session-gadingserpongproperty2023", filename="session-gadingserpongproperty2023.session")
 
 hashtags = ["beantobarchocolate", "chocolatemaker", "craftchocolate"]
 processed = 0
