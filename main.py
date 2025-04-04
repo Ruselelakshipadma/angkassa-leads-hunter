@@ -17,7 +17,12 @@ app = Flask(__name__)
 
 # === STEP 1: AUTH GOOGLE SHEETS ===
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("your_credentials.json", scope)
+
+# Ambil kredensial JSON dari environment variable
+credentials_json = os.environ.get('GOOGLE_CREDENTIALS')
+
+# Pastikan kredensial diambil dari environment variable yang telah diset
+creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_json, scope)
 client = gspread.authorize(creds)
 
 sheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1pO-Ww9B8ec4qTyy1N-xPprEptgPTXO5sNydK4mS7g-E")
@@ -32,7 +37,7 @@ existing_emails = set(master_sheet.col_values(4))
 
 # === STEP 2: IG SESSION ===
 L = instaloader.Instaloader()
-L.load_session_from_file("gadingserpongproperty2023", filename="./gadingserpongproperty2023.session")
+L.load_session_from_file("gadingserpongproperty2023", filename="./gadingserpongproperty2023.session"))
 
 hashtags = ["beantobarchocolate", "chocolatemaker", "craftchocolate"]
 processed = 0
