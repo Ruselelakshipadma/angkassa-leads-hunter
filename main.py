@@ -22,7 +22,7 @@ scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 credentials_json = os.environ.get('GOOGLE_CREDENTIALS')
 
 # Pastikan kredensial diambil dari environment variable yang telah diset
-creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_json, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("your_credentials.json", scope)
 client = gspread.authorize(creds)
 
 sheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1pO-Ww9B8ec4qTyy1N-xPprEptgPTXO5sNydK4mS7g-E")
