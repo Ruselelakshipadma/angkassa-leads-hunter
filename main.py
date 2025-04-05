@@ -16,6 +16,11 @@ import re
 # Setup Flask app
 app = Flask(__name__)
 
+# === STEP 0: BIKIN FILE SESSION DARI ENV (RAILWAY) ===
+session_content = os.environ.get("IG_SESSION_CONTENT")
+with open("session-gadingserpongproperty2023", "w") as f:
+    f.write(session_content)
+
 # === STEP 1: AUTH GOOGLE SHEETS ===
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
@@ -46,7 +51,7 @@ max_leads = 50
 
 def get_leads():
     global processed
-    print("🔍 Starting to scan for new leads...")
+    print("\U0001F50D Starting to scan for new leads...")
     for tag in hashtags:
         posts = L.get_hashtag_posts(tag)
         for post in posts:
@@ -63,18 +68,15 @@ def get_leads():
                 timezone = ""
                 status = ""
 
-                # FILTER out akun yang gak relevan
                 if any(x in bio for x in ["exporter", "exportir", "produce cocoa", "coffee", "barista", "review", "tasting"]):
                     continue
                 if last_post.year < 2020:
                     continue
 
-                # Cek email dari bio
                 emails_bio = re.findall(r"[\w\.-]+@[\w\.-]+", bio)
                 if emails_bio:
                     email_ig = emails_bio[0]
 
-                # Cek website
                 if website:
                     try:
                         res = requests.get(website, timeout=10)
@@ -88,7 +90,6 @@ def get_leads():
                         if text_content:
                             language = detect(text_content)
 
-                        # Estimasi timezone
                         if any(x in website for x in ['.jp', 'japan']):
                             timezone = "Asia/Tokyo"
                         elif any(x in website for x in ['.fr', 'france']):
@@ -102,12 +103,10 @@ def get_leads():
                     except:
                         pass
 
-                # Skip kalau email udah ada
                 email_to_check = email_web or email_ig
                 if email_to_check and email_to_check in existing_emails:
                     continue
 
-                # Aturan validitas
                 if not email_to_check and last_post.year >= 2024:
                     status = "✅ Valid (2024 active, no email)"
                 elif email_to_check:
@@ -115,13 +114,11 @@ def get_leads():
                 else:
                     continue
 
-                # Default language & timezone fallback
                 if not language:
                     language = "en"
                 if not timezone:
                     timezone = "Etc/GMT"
 
-                # SIMPAN ke sheet
                 new_leads_sheet.append_row([
                     username, full_name, bio, website, email_ig, email_web, language, timezone, str(last_post.date()), status
                 ])
@@ -132,7 +129,7 @@ def get_leads():
                 if processed >= max_leads:
                     break
 
-                time.sleep(random.randint(60, 90))  # Delay per profile
+                time.sleep(random.randint(60, 90))
 
             except Exception as e:
                 print(f"❌ Error: {e}")
@@ -143,7 +140,6 @@ def get_leads():
 
     print("✅ DONE: Leads berhasil dikumpulkan ke sheet New Leads")
 
-# === FLASK ENDPOINT UNTUK MONITORING DAN MANUAL TRIGGER ===
 @app.route('/')
 def home():
     return "🚀 Angkassa Cocoa AI Lead Hunter is running."
