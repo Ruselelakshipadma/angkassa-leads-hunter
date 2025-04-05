@@ -37,7 +37,7 @@ existing_emails = set(master_sheet.col_values(4))
 
 # === STEP 2: INSTAGRAM LOGIN SESSION ===
 L = instaloader.Instaloader()
-L.load_session_from_file("gadingserpongproperty2023", filename="/etc/secrets/session-gadingserpongproperty2023")
+L.load_session_from_file("gadingserpongproperty2023", filename="session-gadingserpongproperty2023")
 
 # Target hashtags
 hashtags = ["beantobarchocolate", "chocolatemaker", "craftchocolate"]
