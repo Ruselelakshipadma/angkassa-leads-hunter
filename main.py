@@ -12,14 +12,10 @@ from bs4 import BeautifulSoup
 from flask import Flask
 from datetime import datetime
 import re
+from io import StringIO
 
 # Setup Flask app
 app = Flask(__name__)
-
-# === STEP 0: BIKIN FILE SESSION DARI ENV (RAILWAY) ===
-session_content = os.environ.get("IG_SESSION_CONTENT")
-with open("session-gadingserpongproperty2023", "w") as f:
-    f.write(session_content)
 
 # === STEP 1: AUTH GOOGLE SHEETS ===
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -40,9 +36,14 @@ except:
 
 existing_emails = set(master_sheet.col_values(4))
 
-# === STEP 2: INSTAGRAM LOGIN SESSION ===
+# === STEP 2: INSTAGRAM LOGIN SESSION (dari ENV) ===
 L = instaloader.Instaloader()
-L.load_session_from_file("gadingserpongproperty2023", filename="session-gadingserpongproperty2023")
+session_content = os.environ.get("IG_SESSION_CONTENT")
+if not session_content:
+    raise Exception("❌ IG_SESSION_CONTENT not found in environment variable.")
+
+session_file = StringIO(session_content)
+L.load_session_from_file(username="gadingserpongproperty2023", file=session_file)
 
 # Target hashtags
 hashtags = ["beantobarchocolate", "chocolatemaker", "craftchocolate"]
@@ -51,7 +52,7 @@ max_leads = 50
 
 def get_leads():
     global processed
-    print("\U0001F50D Starting to scan for new leads...")
+    print("🔍 Starting to scan for new leads...")
     for tag in hashtags:
         posts = L.get_hashtag_posts(tag)
         for post in posts:
@@ -140,6 +141,7 @@ def get_leads():
 
     print("✅ DONE: Leads berhasil dikumpulkan ke sheet New Leads")
 
+# === FLASK ENDPOINTS ===
 @app.route('/')
 def home():
     return "🚀 Angkassa Cocoa AI Lead Hunter is running."
