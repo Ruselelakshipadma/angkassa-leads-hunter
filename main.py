@@ -48,7 +48,7 @@ def get_leads():
     global processed
     print("🔍 Starting to scan for new leads...")
     for tag in hashtags:
-        posts = instaloader.Hashtag.from_name(L.context, tag).get_posts()
+        posts = L.get_hashtag_posts(tag)
         for post in posts:
             try:
                 profile = post.owner_profile
